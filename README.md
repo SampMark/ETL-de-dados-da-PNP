@@ -20,43 +20,47 @@ Visualize o [**Painel de Análise de Indicadores do IFRN extraídos da PNP**](ht
 
 ## 🚀 Fluxo de Execução do Pipeline
 
-O notebook é organizado em etapas sequenciais. A seguir, uma descrição de cada uma:
+Este notebook automatiza a extração, tratamento e carga (ETL) dos microdados da Plataforma Nilo Peçanha (PNP) para o Google BigQuery. O fluxo foi projetado em etapas sequenciais para garantir a integridade e a qualidade dos dados.
 
 ### **Etapa 1: Instalação e Autenticação**
-* **O que faz:** Instala as bibliotecas Python necessárias (`pandas-gbq`, `gspread`, etc.) e realiza a autenticação do usuário para permitir o acesso ao Google Drive e aos serviços Google Cloud.
+* Instalação das bibliotecas Python necessárias (`pandas-gbq`, `gspread`, etc.).
+* Autenticação do usuário para permitir o acesso ao Google Drive e aos serviços Google Cloud.
 * **Ação do Usuário:** Executar a célula e autorizar o acesso à sua Conta Google quando solicitado.
 
 ### **Etapa 2: Definição das Funções Principais**
-* **O que faz:** Carrega todas as funções que encapsulam a lógica do pipeline (download, descompressão, análise, processamento, etc.).
-* **Ação do Usuário:** Apenas executar a célula. Nenhuma modificação é necessária.
+* Carregamento das funções em memória que realizam as principais tarefas do pipeline: download, descompressão, análise de cabeçalhos, processamento e tratamento dos dados.
 
 ### **Etapa 3: Configuração do Processo**
-* **O que faz:** Exibe uma interface interativa para o usuário definir os parâmetros da extração.
+* O usuário define os parâmetros da extração através numa interface básica interativa:
 * **Ação do Usuário:**
     * **Tabela de Dados:** Escolher a base de dados de interesse (ex: `matriculas`, `servidores`).
-    * **Ano Inicial e Final:** Definir o período da análise.
+    * **Período**: sefine o intervalo de anos (Ano Inicial e Final) para a extração.
     * **Nome da Instituição:** Inserir o nome ou sigla da(s) instituição(ões) a serem filtradas, separados por vírgula (ex: `IFRN, Instituto Federal do Rio Grande do Norte`).
+    * **Forçar Atualização**: Opção para baixar novamente os arquivos, ignorando o cache local no Google Drive.
 
 ### **Etapa 4: Download e Análise de Cabeçalhos**
-* **O que faz:** Com base nos parâmetros da Etapa 3, o script baixa os arquivos `.gz`, os descompacta e lê o cabeçalho de cada `.csv`. Ao final, exibe uma tabela comparativa e sugere uma lista de colunas que são comuns a todos os arquivos do período.
-* **Ação do Usuário:** Analisar a tabela de cabeçalhos e **copiar a lista de colunas sugerida (`final_columns_to_keep`)** para usar na próxima etapa.
+* Com base nos parâmetros da Etapa 3, o script baixa os arquivos `.gz`, os descompacta e lê o cabeçalho de cada `.csv`. Ao final, exibe uma tabela comparativa e sugere uma lista de colunas que são comuns a todos os arquivos do período.
+* **Ponto de Decisão do Usuário:** Analisar a tabela de cabeçalhos e **copiar e editar conforme a necessidade a lista de colunas sugerida em (`manter_colunas = [...]`)** a ser utilizada na próxima etapa.
 
 ### **Etapa 5: Processamento e Criação do DataFrame**
-* **O que faz:** Utiliza a lista de colunas definida pelo usuário para ler, filtrar (pela instituição selecionada) e unificar todos os arquivos CSV em um único DataFrame Pandas (`df_final`).
+* O usuário deve copiar a lista de colunas sugerida (e editá-la conforme a necessidade) e inseri-la na célula de código desta etapa
+* O Script irá utilizar a lista de colunas definida pelo usuário para ler, filtrar (pela instituição selecionada) e unificar todos os arquivos CSV em um único DataFrame Pandas (`df_filtrado`).
 * **Ação do Usuário:** **Colar a lista de colunas** copiada da Etapa 4 no local indicado e executar a célula.
 
-### **Etapa 6: Análise Exploratória e Limpeza dos Dados**
-* **O que faz:** Aplica uma série de transformações no DataFrame `df_final` para criar uma versão limpa e padronizada, chamada `df_processed`. As principais ações são:
-    1.  **Criação da coluna `Cursos`**: Adiciona prefixos como "Licenciatura em", "Tecnologia em" e "FIC" aos nomes dos cursos.
+### **Etapa 6 a 8: Tratamento, Limpeza e Criação de Métricas (ETL)**
+* Uma sequência de tratamentos é aplicada ao DataFrame `df_filtrado` para criar uma versão limpa e padronizada, chamada `df_tratado`. As principais ações são:
+    1.  **Criação da coluna `Cursos`**: Adiciona prefixos como "Licenciatura em", "Tecnologia em" e "FIC" aos nomes dos cursos de modo a evitar que no passo seguinte, cursos com mesmo nome mas em níveis distintos sejam padronizados equivocadamente.
     2.  **Padronização de Nomes de Cursos**: Executa uma limpeza profunda na coluna `Cursos`, removendo prefixos, corrigindo erros e aplicando regras de normalização.
     3.  **Conversão para Booleano**: Trata a coluna `Matrícula Atendida` para que contenha apenas valores `True` ou `False`.
     4.  **Ajustes Categóricos**: Padroniza valores em colunas como `Forma de ingresso`.
     5.  **Renomeação de Colunas**: Renomeia todas as colunas para o padrão `snake_case`, ideal para bancos de dados.
     6.  **Conversão de Tipos**: Ajusta os tipos de dados de cada coluna (inteiro, data, string, etc.).
+    7.  **Cálculo de Métricas**: Criação de colunas-chave para análise, como `Vagas` e `Inscritos`, aplicando a lógica de desduplicação para evitar somas inflacionadas.
 * **Ação do Usuário:** Executar as células em sequência para aplicar todo o tratamento.
 
-### **Etapa 7: Exportação para o BigQuery**
-* **O que faz:** Realiza a última etapa do pipeline, enviando o DataFrame final (`df_processed`) para uma tabela no Google BigQuery.
+### ** Etapa 9 e 10: Análise Estatística e Exportação para o BigQuery**
+* São realizadas análises estatísticas descritivas e de outliers sobre os dados tratados para verificar a qualidade final.
+* Finalmente, a última etapa do pipeline, envio do DataFrame final (`df_tratado`) para uma tabela no Google BigQuery, finalizando o processo de ETL. O script gera um link direto para a tabela criada.
 * **Ação do Usuário:**
     1.  Definir as variáveis `project_id` e `dataset_id` com as informações do seu projeto no Google Cloud.
     2.  Executar a célula para iniciar o upload.
@@ -67,7 +71,7 @@ O notebook é organizado em etapas sequenciais. A seguir, uma descrição de cad
 2.  **Execute a Etapa 1:** Instale as dependências e autentique sua conta Google para acessar o Drive.
 3.  **Execute a Etapa 2:** Carregue as funções do pipeline.
 4.  **Configure na Etapa 3:** Preencha os campos da interface interativa com a tabela, período e instituição de seu interesse.
-5.  **Execute a Etapa 4:** Aguarde o download e a análise dos cabeçalhos. Ao final, copie a lista de colunas (`final_columns_to_keep`).
+5.  **Execute a Etapa 4:** Aguarde o download e a análise dos cabeçalhos. Ao final, copie a lista de colunas (`manter_colunas`).
 6.  **Cole na Etapa 5:** Cole a lista de colunas no local indicado e execute a célula para criar o DataFrame bruto (`df_final`).
 7.  **Execute a Etapa 6:** Rode todas as células desta etapa para realizar a limpeza e o processamento dos dados.
 8.  **Configure e Execute a Etapa 7:** Insira o ID do seu projeto e do seu dataset do BigQuery e execute a célula para exportar a tabela final.
@@ -77,3 +81,10 @@ O notebook é organizado em etapas sequenciais. A seguir, uma descrição de cad
 * Uma Conta Google com acesso ao Google Drive.
 * Um projeto no **Google Cloud Platform** com a **API do BigQuery** ativada.
 * Permissões de Editor (`BigQuery Data Editor` e `BigQuery Job User`) no projeto do Google Cloud.
+
+## 📚 Referências
+
+* MORAES, Gustavo Henrique et al. **Plataforma Nilo Peçanha: guia de referência metodológica**. Brasília, DF: Editora Evobiz, 2020. 131 p. E-book (PDF). Disponível em: (https://dadosabertos.mec.gov.br/images/pdf/grm-2020-isbn-revisado.pdf).
+* **Plataforma Nilo Peçanha no Power BI**. Disponível em: (https://app.powerbi.com/view?r=eyJrIjoiZDhkNGNiYzgtMjQ0My00OGVlLWJjNzYtZWQwYjI2OThhYWM1IiwidCI6IjllNjgyMzU5LWQxMjgtNGVkYi1iYjU4LTgyYjJhMTUzNDBmZiJ9).
+
+
