@@ -7,7 +7,8 @@ Este projeto consiste em um pipeline de dados automatizado, desenvolvido em note
 O objetivo é transformar e analisar grandes volumes de dados, disponibilizados anualmente em formato `.csv.gz`, em um DataFrame limpo, personalizado, padronizado e pronto para análise. O armazenando do Data Frame Pandas final serão tabelas do **Google BigQuery**, que podem ser conectadas a quaisquer ferramentas de _Business Intelligence_ (BI), como o **Google Looker Studio**, entre outras. O pipeline é configurável através de uma interface interativa, permitindo que o usuário selecione a tabela de dados conforme a dimensão da PNP, o período de análise e as instituições de ensino desejadas.
 
 * [**Notebook Colab 1: ETL da PNP para Big Query - dimensão `matriculas`**](https://github.com/SampMark/ETL-de-dados-da-PNP/blob/main/GitHub_ETL_of_PNP_Data___Pipeline_for_BigQuery.ipynb)
-* [**Notebook Colab 2: ETL da PNP para Big Query - dimensão `servidores`**](https://github.com/SampMark/ETL-de-dados-da-PNP/blob/main/GitHub_ETL_of_PNP_Data___Pipeline_for_BigQuery___public_servants_dimension.ipynb)
+* [**Notebook Colab 2: ETL da PNP para Big Query - dimensão `eficiencia_academica`**](https://github.com/SampMark/ETL-de-dados-da-PNP/blob/main/GitHub_ETL_of_PNP_Data___Pipeline_for_BigQuery___academic_efficiency_dimension.ipynb)
+* [**Notebook Colab 3: ETL da PNP para Big Query - dimensão `servidores`**](https://github.com/SampMark/ETL-de-dados-da-PNP/blob/main/GitHub_ETL_of_PNP_Data___Pipeline_for_BigQuery___public_servants_dimension.ipynb)
 * Visualize os resultados no [**Painel de Análise de Indicadores do IFRN extraídos da PNP**](https://lookerstudio.google.com/reporting/10eeab08-4514-4251-bde9-7754fda7718f).
 
 ## ✨ Funcionalidades Principais
