@@ -99,12 +99,12 @@ Para Colab, as dependências de Google geralmente já estão presentes.
 
 * **Leitura tolerante** a CSVs com `;` e codificações mistas do portal.
 * **Unicode NFC** para consistência de acentos em todo o DataFrame.
-* **Mapeamento estático UF→Região** para consultas e agregações rápidas.
+* **Mapeamento estático UF → Região** para consultas e agregações rápidas.
 
 ## Limitações conhecidas
 
 * URL de 2022 como padrão; para anos adicionais, alterar `URL`.
-* Exportação via conta interativa do Colab; uso em produção recomenda Service Account e variáveis de ambiente para credenciais e IDs.
+* Exportação via conta interativa do Colab; uso em produção recomenda `Service Account` e variáveis de ambiente para credenciais e IDs.
 
 ## Roadmap curto
 
@@ -113,6 +113,4 @@ Para Colab, as dependências de Google geralmente já estão presentes.
 * Validação de esquema (colunas esperadas) e `pyproject.toml`.
 * Modo **dry-run** para exportação.
 
-## Licença
-
-Definir conforme o repositório (ex.: MIT).
+## Licença MIT
