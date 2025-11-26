@@ -14,17 +14,17 @@
 | # | Column       | Non-Null Count | Dtype  |
 |---|---------------|----------------|--------|
 | 0 | UID           | 644 non-null   | object |
-| 1 | Ano_Criação   | 644 non-null   | int64  |
+| 1 | Ano_Criacao   | 644 non-null   | int64  |
 | 2 | Sigla_IF      | 644 non-null   | object |
 | 3 | Nome_IF       | 644 non-null   | object |
 | 4 | Campus_IF     | 644 non-null   | object |
-| 5 | UF            | 644 non-null   | object |
-| 6 | Município     | 644 non-null   | object |
-| 7 | Cidade_UF     | 644 non-null   | object |
+| 5 | Regioes       | 644 non-null   | object |
+| 6 | UF            | 644 non-null   | object |
+| 7 | Município     | 644 non-null   | object |
+| 8 | Cidade_UF     | 644 non-null   | object |
 
-**dtypes:** int64(1), object(7)  
-**memory usage:** 40.4+ KB
-
+**dtypes:** int64(1), object(8)  
+**memory usage:** 45.4+ KB
 
 ## Stack
 
