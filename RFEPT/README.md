@@ -8,6 +8,24 @@
 * **Tratar** textos (mojibake, acentuação, Unicode), padronizar colunas e enriquecer com **Endereço** e **Regiões**.
 * **Carregar** o DataFrame em uma aba do Google Sheets.
 
+## Download
+* **[DOWNLOAD REDE FEDERAL DE EPCT – Unidades da Rede Federal de EPCT](https://raw.githubusercontent.com/SampMark/files/refs/heads/main/REDE%20FEDERAL%20DE%20EPCT%20%E2%80%93%20Unidades%20da%20Rede%20Federal%20de%20EPCT%20-%20Mapa_RFEPCT_MEC_2022.csv)**: arquivo `CSV` tratado com a listagem das instituições da Rede Federal de EPCT, data de autorização de funcionamento - 2022
+  
+| # | Column       | Non-Null Count | Dtype  |
+|---|---------------|----------------|--------|
+| 0 | UID           | 644 non-null   | object |
+| 1 | Ano_Criação   | 644 non-null   | int64  |
+| 2 | Sigla_IF      | 644 non-null   | object |
+| 3 | Nome_IF       | 644 non-null   | object |
+| 4 | Campus_IF     | 644 non-null   | object |
+| 5 | UF            | 644 non-null   | object |
+| 6 | Município     | 644 non-null   | object |
+| 7 | Cidade_UF     | 644 non-null   | object |
+
+**dtypes:** int64(1), object(7)  
+**memory usage:** 40.4+ KB
+
+
 ## Stack
 
 * Python 3.10+
