@@ -9,19 +9,19 @@
 * **Carregar** o DataFrame em uma aba do Google Sheets.
 
 ## Download
-* **[DOWNLOAD REDE FEDERAL DE EPCT – Unidades da Rede Federal de EPCT](https://raw.githubusercontent.com/SampMark/files/refs/heads/main/REDE%20FEDERAL%20DE%20EPCT%20%E2%80%93%20Unidades%20da%20Rede%20Federal%20de%20EPCT%20-%20Mapa_RFEPCT_MEC_2022.csv)**: arquivo `CSV` tratado com a listagem das instituições da Rede Federal de EPCT, data de autorização de funcionamento - 2022
+* **[DOWNLOAD REDE FEDERAL DE EPCT – Unidades da Rede Federal de EPCT](https://raw.githubusercontent.com/SampMark/files/refs/heads/main/REDE%20FEDERAL%20DE%20EPCT%20%E2%80%93%20Unidades%20da%20Rede%20Federal%20de%20EPCT%20-%20Mapa_RFEPCT_MEC_2022.csv)**: arquivo `CSV` tratado com a listagem das instituições da Rede Federal de EPCT, data de autorização de funcionamento até 2022, **com a atualização dos campi que eram anteriormente "Unidades Avançadas" (sem autonomia) e deixaram de ser atualmente**.
   
-| # | Column       | Non-Null Count | Dtype  |
-|---|---------------|----------------|--------|
-| 0 | UID           | 644 non-null   | object |
-| 1 | Ano_Criacao   | 644 non-null   | int64  |
-| 2 | Sigla_IF      | 644 non-null   | object |
-| 3 | Nome_IF       | 644 non-null   | object |
-| 4 | Campus_IF     | 644 non-null   | object |
-| 5 | Regioes       | 644 non-null   | object |
-| 6 | UF            | 644 non-null   | object |
-| 7 | Município     | 644 non-null   | object |
-| 8 | Cidade_UF     | 644 non-null   | object |
+| # | Column               | Non-Null Count | Dtype  |
+|---|----------------------|----------------|--------|
+| 0 | UID                  | 644 non-null   | object |
+| 1 | Ano_Criacao          | 644 non-null   | int64  |
+| 2 | Sigla_IF             | 644 non-null   | object |
+| 3 | Nome_IF              | 644 non-null   | object |
+| 4 | Campus_IF            | 644 non-null   | object |
+| 5 | Regioes              | 644 non-null   | object |
+| 6 | UF                   | 644 non-null   | object |
+| 7 | Município            | 644 non-null   | object |
+| 8 | Endereco_Padronizado | 644 non-null   | object |
 
 **dtypes:** int64(1), object(8)  
 **memory usage:** 45.4+ KB
