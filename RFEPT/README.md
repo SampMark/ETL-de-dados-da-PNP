@@ -38,6 +38,55 @@
 * Conjunto: Rede Federal de Educação Profissional, Científica e Tecnológica (dados.gov.br)
 * Endpoint padrão (OData Olinda): `.../servico/PDA_SETEC/versao/v1/odata/RedeFederal_Lista_Instituicoes_RFEPCT_2022?$format=text/csv`
 
+## Mapa de Correções
+
+```
+MAPA_CORRECAO_CAMPUS = {
+    r'^Unidade$': 'Uned',
+    'Campus Avançado Abelardo Luz': 'Campus Abelardo Luz',
+    'Campus Avançado Arcos': 'Campus Arcos',
+    'Campus Avançado Astorga': 'Campus Astorga',
+    'Campus Avançado Bom Sucesso': 'Campus Bom Sucesso',
+    'Campus Avançado Bonfim': 'Campus Bónfim',
+    'Campus Avançado Cabedelo Centro': 'Campus Cabedelo Centro',
+    'Campus Avançado Carolina': 'Campus Carolina',
+    'Campus Avançado Conselheiro Lafaiete': 'Campus Conselheiro Lafaiete',
+    'Campus Avançado Formoso do Araguaia': 'Campus Formoso do Araguaia',
+    'Campus Avançado Lagoa da Confusão': 'Campus Lagoa da Confusão',
+    'Campus Avançado Ipatinga': 'Campus Ipatinga',
+    'Campus Avançado Iranduba': 'Campus Iranduba',
+    'Campus Avançado Jaguarão': 'Campus Jaguarão',
+    'Campus Avançado João Pessoa Mangabeira': 'Campus Avançado Mangabeira',
+    'Campus Avançado João Pessoa': 'Campus Avançado João Pessoa',
+    'Campus Avançado José de Freitas': 'Campus José de Freitas',
+    'Campus Avançado Jundiaí': 'Campus Jundiaí',
+    'Campus Avançado Maricá': 'Campus Maricá',
+    'Campus Avançado Natal Zona Leste': 'Campus Natal-Zona Leste',
+    'Campus Avançado Oiapoque': 'Campus Oiapoque',
+    'Campus Avançado Pedras de Fogo': 'Campus Pedra de Fogo',
+    'Campus Avançado Pedro Afonso': 'Campus Pedro Afonso',
+    'Campus Avançado PIO IX': 'Campus Pio IX',
+    'Campus Avançado Piumhi': 'Campus Piumhi',
+    'Campus Avançado Ponte Nova': 'Campus Ponte Nova',
+    'Campus Avançado São Miguel do Guaporé': 'Campus São Miguel do Guaporé',
+    'Campus Avançado São Paulo - Pinheiros': 'Campus Pinheiros',
+    'Campus Avançado São Paulo - São Miguel': 'Campus São Paulo - São Miguel',
+    'Campus Avançado Sinop': 'Campus Sinop',
+    'Campus Avançado Teresina Dirceu Arcoverde': 'Campus Teresina Dirceu Arcoverde',
+    'Campus Avançado Uberaba Parque Tecnológico': 'Campus Avançado Uberaba Parque Tecnológico (Unidade I)',
+    'Campus Avançado Veranópolis': 'Campus Veranópolis',
+    'Campus Avançado Viana': 'Campus Viana',
+    'Campus Avançado Vigia': 'Campus Vigia',
+    'Campus Duque de Caxias CP': 'Campus Duque de Caxias',
+     r'^Campus Jaraguá do Sul$': 'Campus Jaraguá do Sul Centro',
+    'Campus Natal Cidade Alta': 'Campus Natal-Centro Histórico',
+    'Campus Santo Antÿnio de Jesus': 'Campus Santo Antônio de Jesus',
+    'Campus Santo Antÿnio de Pádua': 'Campus Santo Antônio de Pádua',
+    'Campus São Carlos - IFSC': 'Campus São Carlos',
+    'Uned Belo Horizonte': 'Uned Belo Horizonte (Campus Nova Suíça)',
+}
+```
+
 ## Principais funções
 
 ### `load_mec_unidades(url: str = URL, save_local: bool = True, show_preview: bool = True) -> pd.DataFrame`
