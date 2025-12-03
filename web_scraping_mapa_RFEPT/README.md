@@ -53,8 +53,9 @@ Integração com uma planilha legada (`Mapa_RFEPCT_MEC_2022`) para:
 Algoritmo de categorização que define a tipologia da unidade com base no nome:
 * *Categorias:* Reitoria, Campus, Campus Avançado, Polo de Inovação, Uned, Centro de Referência, etc.
 
-### 7. Exportação
-O dataset final processado é exportado automaticamente para uma planilha no Google Sheets (`Web-Scraping-and-merge-RFEPT-map`), substituindo os dados antigos para manter o dashboard atualizado.
+### 7. 🌎 Exportação e Download (público) 
+O dataset final está disponível para o público no Google Sheets [**Web-Scraping-and-merge-RFEPT-map-public**](https://docs.google.com/spreadsheets/d/18S79OGp2RV5QmxO3Rb39PCmRkY_WrCL3gWgRGqIPELk/edit?usp=sharing).
+* `CSV` - [**Web-Scraping-and-merge-RFEPT-map-public**](https://raw.githubusercontent.com/SampMark/files/refs/heads/main/Web-Scraping-and-merge-RFEPT-map-public%20-%20Web-Scraping-and-merge-RFEPT-map.csv)
 
 ## 📊 Estrutura dos Dados (Output)
 
