@@ -1,7 +1,7 @@
 # ETL: Unidades da Rede Federal de EPCT
 
-> Pipeline para extração, tratamento e carregamento a lista de instituições e campi da Rede Federal (EPCT) a partir do Portal de Dados Abertos do MEC (serviço OData “PDA_SETEC”).
-> Saída pronta para análise e para publicação no Google Sheets.
+* Pipeline para extração, tratamento e carregamento a lista de instituições e campi da Rede Federal (EPCT) a partir do Portal de Dados Abertos do MEC (serviço OData “PDA_SETEC”).
+* Saída pronta para análise e para publicação no Google Sheets.
 
 ## Objetivo
 
