@@ -1,5 +1,5 @@
 # **Pipeline de Extração, Tratamento e Carregamento para o BigQuery de Dados da Plataforma Nilo Peçanha (PNP)**
-<img src="https://novopnp.mec.gov.br/assets/logo-nilo-vertical-white-39a156b6.svg" alt="Logo da Plataforma Nilo Peçanha" width="150"/>
+<img width="781" height="217" alt="image (1)" src="https://github.com/user-attachments/assets/4cceff1f-ac21-4e81-a0fe-3ad036cca0f4"/>
 
 ## 📑 Visão Geral
 
