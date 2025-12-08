@@ -1,3 +1,5 @@
+<img width="781" height="217" alt="image (1)" src="https://github.com/user-attachments/assets/4cceff1f-ac21-4e81-a0fe-3ad036cca0f4"/>
+
 # ETL: Unidades da Rede Federal de EPCT
 
 * Pipeline para extração, tratamento e carregamento a lista de instituições e campi da Rede Federal (EPCT) a partir do Portal de Dados Abertos do MEC (serviço OData “PDA_SETEC”).
