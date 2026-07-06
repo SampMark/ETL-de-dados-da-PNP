@@ -58,3 +58,12 @@ Para executar o script localmente (fora do Google Colab), você precisará das s
 
 ```bash
 pip install pandas geopy requests gspread gspread_dataframe google-auth google-auth-oauthlib
+```
+
+---
+
+### 📊 Dataset Gerado
+
+O resultado final do processamento, contendo as coordenadas (latitude/longitude), status da API, nível de precisão, confiança e flags de revisão manual para todas as unidades da Rede Federal, está disponível para consulta e download no repositório:
+
+🔗 **[rfept_unidades_geocodificadas.csv](https://github.com/SampMark/files/blob/main/rfept_unidades_geocodificadas.csv)**
