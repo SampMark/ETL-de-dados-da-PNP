@@ -1,0 +1,122 @@
+# 📊 ETL de Dados Populacionais (IBGE) e Abrangência dos Campi da RFEPCT
+
+Este repositório contém um pipeline de ETL (Extract, Transform, Load) otimizado e desenvolvido em Python para cruzar dados demográficos do **Censo IBGE 2022** com a base geográfica dos campi da **Rede Federal de Educação Profissional, Científica e Tecnológica (RFEPCT)**. 
+
+O objetivo principal é calcular a **população abrangida** por cada campus dentro de um raio de influência (padrão de *80 km*), gerando _datasets_ prontos para consumo em ferramentas de BI (como Looker Studio, Power BI).
+
+## 🎯 Objetivos
+1. Ingerir e tratar a *Tabela 9514* do SIDRA/IBGE (População por idade e sexo).
+2. Enriquecer os municípios brasileiros com coordenadas geográficas (Latitude/Longitude).
+3. Calcular a distância real (estimada) entre os municípios e os campi da Rede Federal.
+4. Mapear a área de abrangência (raio de 80km) e somar a população potencialmente impactada por cada unidade.
+5. Exportar os dados tratados para CSV (Google Drive) e Google Sheets.
+
+---
+
+## 🔄 Fluxo do Pipeline (Arquitetura)
+
+O código é estruturado em funções reutilizáveis e dividido nas seguintes etapas:
+
+### 1. Extração (Extract)
+* **SIDRA/IBGE:** Leitura do CSV bruto exportado do SIDRA (Tabela 9514).
+* **Geolocalização:** Download da base de coordenadas dos municípios brasileiros.
+* **Campi RFEPCT:** Leitura da base de dados das unidades da Rede Federal (com metadados como ano de criação, tipo de unidade, endereço, etc.).
+
+### 2. Transformação (Transform)
+* **Tratamento Demográfico:** 
+  * Limpeza de códigos IBGE e conversão de formatos numéricos.
+  * Criação de faixas etárias condizentes com os públicos-alvos dos IFs conforme as modalidades formativas (ex: 0-5, 6-10, 11-14, 15-17, 18-24, etc.).
+  * Mapeamento de IFs por Estados e regiões geográficas.
+  * 🛡️ **Filtro Anti-Dupla-Contagem:** Remove linhas agregadas (como "Total" ou "Idade Ignorada") para evitar a duplicidade na soma populacional.
+* **Engenharia Espacial (Otimização com `cKDTree`):**
+  * Para evitar o cálculo de distância $O(N \times M)$ entre todos os municípios e todos os campi, o código projeta as coordenadas (Lat/Lon) para uma **esfera unitária 3D**.
+  * Utiliza a estrutura `scipy.spatial.cKDTree` para fazer um **pré-filtro espacial** ultra-rápido, extraindo apenas os municípios candidatos que estão dentro do raio limite.
+* **Cálculo de Distância:**
+  * **Método Padrão (Haversine + Fator Rodoviário):** Aplica a fórmula de Haversine (distância em linha reta) e multiplica por um fator de correção (1.3) para estimar a distância rodoviária. É rápido e estável.
+  * **Método Alternativo (OSRM):** Suporte opcional para consultas à API do OSRM (pública ou local) para cálculo de distância real por malha viária, com *fallback* automático para Haversine em caso de falha/timeout.
+
+### 3. Carga (Load)
+* **Geração de Tabelas Finais:**
+  * `Tabela Populacional`: Dados demográficos + geolocalização formatados para BI.
+  * `Abrangência de Campi`: Relação detalhada Campus ↔ Município com distância e população.
+  * `População por Campus`: Agregação da população total abrangida por cada campus (ordenada por maior impacto).
+* **Exportação:**
+  * Salvamento em arquivos `.csv` no Google Drive.
+  * Push automático para abas específicas de uma planilha do **Google Sheets** via API (`gspread`), formatando strings de `Lat, Lon` para leitura nativa do Looker Studio.
+
+---
+
+## ⚙️ Configurações (`@dataclass Config`)
+
+Todo o pipeline é controlado por uma classe de configuração de parâmetros:
+
+```python
+CFG = Config()
+CFG.caminho_csv_sidra = "caminho/para/tabela_9514.csv"
+CFG.raio_abrangencia_km = 80.0          # Raio de influência em km
+CFG.fator_rodoviario_haversine = 1.30   # Fator de correção reta -> estrada
+CFG.metodo_distancia = "haversine"      # Opções: "haversine", "osrm_public", "osrm_local"
+CFG.exportar_google_sheets = True       # Exporta para o Sheets
+CFG.spreadsheet_id = "ID_DA_SUA_PLANILHA"
+```
+
+---
+
+## 📦 Saídas Geradas
+
+Ao final da execução, três bases de dados são consolidadas:
+
+| Arquivo / Aba | Descrição |
+| :--- | :--- |
+| **`tabela_populacional_9514.csv`** | Base demográfica completa com Região, Estado, Município, Faixa Etária, Sexo e População. Inclui colunas de geolocalização formatadas para mapas. |
+| **`abrangencia_campi_80km.csv`** | Tabela relacional (N:N) contendo cada Campus, o Município abrangido dentro do raio, a distância estimada e a população desse município. |
+| **`populacao_por_campus_80km.csv`** | Tabela resumo (Dimensão dos Campi) com o somatório da população total abrangida por cada unidade da RFEPCT. |
+
+---
+
+## 🛠️ Tecnologias e Dependências
+
+O projeto utiliza o ecossistema Python para ciência de dados e integrações com Google:
+
+* **Manipulação de Dados:** `pandas`, `numpy`
+* **Geoespacial:** `scipy` (`cKDTree` para busca espacial otimizada)
+* **Requisições HTTP:** `requests` (para API OSRM)
+* **Google Cloud / Colab:** `gspread`, `google-auth`, `google.colab.drive`
+* **UX/Progresso:** `tqdm`
+
+**Instalação rápida (no Colab):**
+```bash
+!pip -q install tqdm gspread pandas numpy scipy requests
+```
+
+---
+
+## 🚀 Como Executar
+
+Este notebook foi desenhado para ser executado no **Google Colab**, aproveitando a montagem do Google Drive e a autenticação nativa do Google Sheets.
+
+1. Abra o notebook no Google Colab.
+2. Execute a célula de **Instalação de Dependências**.
+3. Na célula de **Configurações**, ajuste os caminhos do CSV do SIDRA (que deve estar no seu Drive) e o `spreadsheet_id` de destino.
+4. Execute a célula **Executar pipeline completo**.
+5. O sistema pedirá permissão para acessar seu Google Drive e sua conta Google (para a escrita na planilha).
+
+---
+
+## 📂 Fontes de Dados
+
+* **População:** [SIDRA / IBGE](https://sidra.ibge.gov/) - Tabela 9514 (População residente, por sexo e idade simples).
+* **Coordenadas dos Municípios:** [Municípios Brasileiros (GitHub)](https://github.com/kelvins/municipios-brasileiros).
+* **Campi da Rede Federal:** Base de dados georreferenciada das unidades da RFEPCT (MEC).
+
+---
+
+## 💡 Destaques Técnicos e Boas Práticas
+
+* **Evita Double Counting:** O SIDRA frequentemente exporta linhas de "Total" junto com as linhas desagregadas. O script detecta e remove essas linhas agregadas para garantir que a soma populacional seja exata.
+* **Escalabilidade Espacial:** O uso do `cKDTree` reduz o tempo de processamento de horas para segundos, pois restringe o cálculo de Haversine apenas aos pares de pontos que *realmente* têm chance de estar dentro do raio de 80km.
+* **Resiliência em APIs:** Ao usar o OSRM, o código implementa *retry*, *timeout* e *fallback* para Haversine, garantindo que o pipeline não quebre devido a bloqueios de rate-limit da API pública.
+* **BI-Ready:** As colunas de Latitude e Longitude são concatenadas no formato `"Lat, Lon"` (ex: `-22.22, -45.92`), que é o formato exigido pelo **Looker Studio** para plotagem automática em mapas sem necessidade de fórmulas adicionais.
+
+---
+*Desenvolvido para apoiar a tomada de decisão, planejamento de expansão e análise de impacto social da Rede Federal de Educação.*
